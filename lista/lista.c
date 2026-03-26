@@ -1,22 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
 #include <stdbool.h>
+#include "lista.h"
 
 Lista* lista_crear()
 {
-    
     Lista* nueva_lista = (Lista*)malloc(sizeof(Lista));
 
     if (nueva_lista != NULL) {
         nueva_lista->head = NULL;
         nueva_lista->tail = NULL;
     }
+    
+    return nueva_lista;
 }
 
 bool lista_vacia(Lista* lista)
 {
-    if(lista ==NULL || lista->head ==NULL) {
+    if(lista->head == NULL) {
         return true;
     }
     return false;
@@ -31,7 +32,7 @@ void lista_insertar_head(Lista* lista, int dato)
         lista->tail = nuevo_nodo;
     }
     else {
-        nuevo_nodo->siguiente = lista->head
+        nuevo_nodo->siguiente = lista->head; 
         lista->head = nuevo_nodo;
     }
 }
@@ -42,31 +43,32 @@ void lista_insertar_tail(Lista* lista, int dato)
 
     if(lista_vacia(lista)) {
         lista->head = nuevo_nodo;
-        lista->tail = nuevo_nodo
+        lista->tail = nuevo_nodo; 
     }
     else{
         lista->tail->siguiente = nuevo_nodo;
-
         lista->tail = nuevo_nodo;
     }
 }
 
-int lista_eliminar_head(Lista* lista)
+int lista_eliminar_head(Lista* lista) 
 { 
     if (lista_vacia(lista)){
         return -1;
-}
+    }
+    
+    Nodo* nodo_a_borrar = lista->head;
+    int dato_guardado = nodo_a_borrar->dato; 
 
-Nodo* nodo_a_borrar = lista->head;
-int dato_guardado = nodo_a_borrar->siguiente;
+    lista->head = nodo_a_borrar->siguiente;
+    
+    if(lista->head == NULL){ 
+        lista->tail = NULL;
+    }
 
-lista->head=nodo_a_borrar->siguiente;
+    nodo_destruir(nodo_a_borrar);
 
-if(lista-head == NULL){
-    lista->tail = NULL;
-}
-nodo_destruir(nodo_a_borrar);
-return dato_guardado;
+    return dato_guardado;
 }
 
 int lista_eliminar_tail(Lista* lista)
@@ -83,15 +85,16 @@ int lista_eliminar_tail(Lista* lista)
         lista->tail = NULL;
     }
     else {
-        Nodo* actual = lista->head
+        Nodo* actual = lista->head; 
 
-        while (actual-> siguiente != lista->tail) {
+        while (actual->siguiente != lista->tail) {
             actual = actual->siguiente;
         }
 
         actual->siguiente = NULL;
-        lista -> tail = actual;
+        lista->tail = actual;
     }
+    
     nodo_destruir(nodo_a_borrar);
     return dato_guardado;
 }
@@ -117,4 +120,4 @@ void lista_destruir(Lista* lista)
         }
         free(lista);
     }
-}
+} 
